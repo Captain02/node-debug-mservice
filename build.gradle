@@ -1,0 +1,49 @@
+	apply plugin: 'java'
+//	apply plugin: 'eclipse'
+	
+	sourceCompatibility=1.8
+	group = 'kd.bos.service'
+	version = '1.0'
+		tasks.withType(JavaCompile) {  
+		options.encoding = "UTF-8" 
+	} 
+	
+	def trd= '../../../mservice-cosmic/lib/trd'
+	def bos= '../../../mservice-cosmic/lib/bos'
+	def biz= '../../../mservice-cosmic/lib/biz'
+	// C:\nextcloudlib\node-debug-mservice\bin
+	
+	//def biz = 'F:/debug/bos-dev-env/mservice-cosmic/lib/biz'
+	//def trd = 'F:/debug/bos-dev-env/mservice-cosmic/lib/trd'
+	//def bos = 'F:/debug/bos-dev-env/mservice-cosmic/lib/bos'
+	
+//	dependencies {
+//	    runtime fileTree(dir: bos, include: '*.jar')
+//	    runtime fileTree(dir: trd, include: '*.jar')
+//	    runtime fileTree(dir: biz, include: '*.jar')
+//	}
+//	implementation  当前项目依赖，当其他项目引入本项目依赖时，不会引入
+//
+//	runtimeOnly 运行时才依赖
+//
+//	compile 当前项目依赖，并且可以传递依赖，当其他项目引入本项目依赖时，会引入
+
+	dependencies {
+		implementation fileTree(dir: bos, include: '*.jar')
+		implementation fileTree(dir: trd, include: '*.jar')
+		implementation fileTree(dir: biz, include: '*.jar')
+	}
+	
+	task sourcesJar(type: Jar, dependsOn: build) {
+	    classifier = 'sources'
+	    from sourceSets.main.allSource
+	 }
+	 
+		
+	 task copyJarTodir(type: Copy){
+		    from 'build/libs'
+			into '/home/local/bos'
+			exclude '**/*.class'
+	 }
+	test.ignoreFailures true
+	
